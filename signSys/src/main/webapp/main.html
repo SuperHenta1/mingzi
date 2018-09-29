@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<link rel="stylesheet" href="media/layui/css/layui.css" media="all">
+<link rel="stylesheet" href="media/css/font-awesome.min.css" media="all">
+
+<style>
+.info-box {
+	height: 85px;
+	background-color: white;
+	background-color: #ecf0f5;
+}
+
+.info-box .info-box-icon {
+	border-top-left-radius: 2px;
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+	border-bottom-left-radius: 2px;
+	display: block;
+	float: left;
+	height: 85px;
+	width: 85px;
+	text-align: center;
+	font-size: 45px;
+	line-height: 85px;
+	background: rgba(0, 0, 0, 0.2);
+}
+
+.info-box .info-box-content {
+	padding: 5px 10px;
+	margin-left: 85px;
+}
+
+.info-box .info-box-content .info-box-text {
+	display: block;
+	font-size: 14px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	text-transform: uppercase;
+}
+
+.info-box .info-box-content .info-box-number {
+	display: block;
+	font-weight: bold;
+	font-size: 18px;
+}
+.major {
+	font-weight: 10px;
+	color: #01AAED;
+}
+.main {
+	margin-top: 25px;
+}
+
+.main .layui-row {
+	margin: 10px 0;
+}
+</style>
+</head>
+
+<body>
+	<div class="layui-fluid main">
+		<div class="layui-row layui-col-space15">
+			<div class="layui-col-md3">
+				<div class="info-box">
+					<span class="info-box-icon"
+						style="background-color: #00c0ef !important; color: white;">
+						<i class="fa fa-sun-o" ></i></span>
+					<div class="info-box-content">签到次数<span
+							class="info-box-number" id="s1">90</span>
+					</div>
+				</div>
+			</div>
+			
+			<div class="layui-col-md3">
+				<div class="info-box">
+					<span class="info-box-icon"
+						style="background-color: #00a65a !important; color: white;"><i
+						class="fa fa-moon-o" aria-hidden="true"></i></span>
+					<div class="info-box-content">
+						<span class="info-box-text">签退次数</span> <span
+							class="info-box-number" id="s3">65</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<button type="button" class="layui-btn layui-btn-normal" id="signinorout"  style="width:194px;" onclick="addClick()">
+				  <i class="layui-icon">&#xe612;</i>签到
+		</button>
+		<button class="layui-btn" onclick="addClick()">修改个人信息</button>
+		<div class="layui-row">
+			<div class="layui-col-md12" style="text-align: center">
+				<h2>签到记录</h2>
+			</div>
+		</div>
+		<div>
+			<table class="layui-hide" id="tbdata" lay-filter="tbdata"></table>
+		</div>
+	</div>
+	<script src="media/layui/layui.js"></script>
+	<script>
+		layui.use('table', function() {
+			var table = layui.table;
+			 
+			  //第一个实例
+			  table.render({
+				  
+			    elem: '#tbdata'
+			    ,height: '560px'
+			    ,url: 'loginloglist' //数据接口
+			    ,page: true //开启分页
+			    ,cols: [[ //表头
+			    	/* {field: 'no', title: '登录账户'} */
+			      {
+                    field: 'sign', title: '签到/签退', templet: function (obj) {
+                        var r;
+                        switch (obj.flag) {
+                            //有效
+                            case 1:
+                                r = "<span style='color: #1E9FFF'>签到</span>";
+                                break;
+                            case 2:
+                                r = "<span style='color: red'>签退</span>";
+                                break;
+                        }
+                        return r;
+                    }
+                }
+			      ,{
+	                    field: 'flag', title: '准时/迟签', templet: function (obj) {
+	                        var r;
+	                        switch (obj.flag) {
+	                            //有效
+	                            case 1:
+	                                r = "<span style='color: #1E9FFF'>准时</span>";
+	                                break;
+	                            case 2:
+	                                r = "<span style='color: red'>迟签</span>";
+	                                break;
+	                        }
+	                        return r;
+	                    }
+	                }
+			      ,{field: 'createdate', title: '签到时间'}
+			      ]]
+			  });
+			  
+		});
+		
+	</script>
+	
+		<script type="text/javascript">
+	$("#signinorout").click(function(){
+		$.ajax({
+			type:"get",
+			url:"signinorout.do",
+			dataType:"json",
+			success:function(data){
+				if(data.code == 1){
+					window.location.href = "find.html";
+				}else{
+					window.location.href = "login.html";
+				}
+				
+				
+			}
+		})
+	})
+</script>
+	<script type="text/javascript">
+	function addClick() {
+		layer.open({
+			type: 2,
+			area:['350px', '400px'],
+			content: 'update.html'
+		});
+	}
+
+</script>
+	
+</body>
+
+</html>

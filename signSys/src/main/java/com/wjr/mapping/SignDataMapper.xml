@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wjr.dao.SignDataMapper" >
+  <resultMap id="BaseResultMap" type="com.wjr.pojo.SignData" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="uid" property="uid" jdbcType="INTEGER" />
+    <result column="createdate" property="createdate" jdbcType="TIMESTAMP" />
+    <result column="flag" property="flag" jdbcType="INTEGER" />
+    <result column="sign" property="sign" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, uid, createdate, flag, sign
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from signdata
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from signdata
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.wjr.pojo.SignData" >
+    insert into signdata (id, uid, createdate, 
+      flag, sign)
+    values (#{id,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{createdate,jdbcType=TIMESTAMP}, 
+      #{flag,jdbcType=INTEGER}, #{sign,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wjr.pojo.SignData" >
+    insert into signdata
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="uid != null" >
+        uid,
+      </if>
+      <if test="createdate != null" >
+        createdate,
+      </if>
+      <if test="flag != null" >
+        flag,
+      </if>
+      <if test="sign != null" >
+        sign,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="uid != null" >
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="createdate != null" >
+        #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="flag != null" >
+        #{flag,jdbcType=INTEGER},
+      </if>
+      <if test="sign != null" >
+        #{sign,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wjr.pojo.SignData" >
+    update signdata
+    <set >
+      <if test="uid != null" >
+        uid = #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="createdate != null" >
+        createdate = #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="flag != null" >
+        flag = #{flag,jdbcType=INTEGER},
+      </if>
+      <if test="sign != null" >
+        sign = #{sign,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wjr.pojo.SignData" >
+    update signdata
+    set uid = #{uid,jdbcType=INTEGER},
+      createdate = #{createdate,jdbcType=TIMESTAMP},
+      flag = #{flag,jdbcType=INTEGER},
+      sign = #{sign,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <!-- 获得签到记录数量 -->
+  <select id="count" parameterType="map" resultType="int">
+  	select count(1) from signdata where uid = #{uid,jdbcType=INTEGER}
+  	
+  
+  </select>
+  
+  
+   <!-- 分页查询 -->
+  <select id="findByIndexAndSize" parameterType="map" resultMap="BaseResultMap">
+  	select * from signdata where uid = #{uid,jdbcType=INTEGER}
+  	limit #{index}, #{size}
+  	
+  </select>
+  
+   <!-- 查询签到次数 -->
+  <select id="findSignIn" parameterType="map" resultType="int">
+  	select count(1) from signdata where uid = #{uid,jdbcType=INTEGER} and sign = 1
+  	
+  </select>
+  
+   <!-- 查询签退次数 -->
+  <select id="findSignOut" parameterType="map" resultType="int">
+  	select count(1) from signdata where uid = #{uid,jdbcType=INTEGER} and sign = 2
+  	
+  </select>
+</mapper>

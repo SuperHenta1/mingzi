@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>滴答办公系统-用户角色</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="media/layui/css/layui.css" media="all">
+    <script src="media/js/jquery.min.js"></script>
+</head>
+<body>
+
+<div class="layui-container">
+    <div class="layui-row" style="margin-top: 10px">
+        <div class="layui-col-xs3" style="margin-right: 20px">
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">邮箱</label>
+                <div class="layui-input-block">
+                    <input type="text" id="email" class="layui-input" placeholder="邮箱">
+                </div>
+            </div>
+        </div>
+        <button type="button" class="layui-btn layui-btn-warm" id="find" style="width:194px;" >
+				  <i class="layui-icon">&#xe615;</i>密码找回
+		</button> 
+    </div>
+</div>
+
+
+
+<div class="layui-row">
+    <div class="layui-col-md11">
+        <table id="tbdata" lay-filter="tbop"></table>
+        <script type="text/html" id="barop">
+            <a class="layui-btn layui-btn-mini" lay-event="edit">编辑</a>
+            <a class="layui-btn layui-btn-danger layui-btn-mini" lay-event="del">删除</a>
+        </script>
+    </div>
+</div>
+
+<script src="media/layui/layui.js"></script>
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+<script type="text/javascript">
+	$("#find").click(function(){
+		$.ajax({
+			type:"get",
+			data:$("#email").val()
+			url:"findpassword",
+			dataType:"json",
+			success:function(data){
+				if(data.code == 1){
+					alert(data.msg);
+				}else{
+					window.location.href = "login.html";
+				}
+				
+				
+			}
+		})
+	})
+</script>
+</body>
+<div style="display: none;margin-top: 10px;width: 480px" id="dvlay">
+    <form id="fm1" class="layui-form layui-form-pane" >
+        <div class="layui-form-item" pane >
+            <label class="layui-form-label">工号：</label>
+            <div class="layui-input-inline">
+                <input id="uid" name="id" readonly class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item" pane>
+            <label class="layui-form-label">角色：</label>
+            <div class="layui-input-inline" id="dv1">
+
+            </div>
+        </div>
+    </form>
+</div>
+</html>
